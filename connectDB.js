@@ -1,7 +1,7 @@
 var simpledb = require('simpledb')
 var AWS = require('aws-sdk');
 var sdb      = new simpledb.SimpleDB({keyid:'AKIAI5VP47JZQLDQW5QQ',secret:'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'})
-
+var item1;
 //console.log("Here");
 //console.log(sdb);
 
@@ -60,6 +60,7 @@ function listDom(callback){
 }
 
 
+
 //put an item in domain
 function putItemInDom(dname, iname, obj, callback){
 
@@ -81,7 +82,6 @@ function putItemInDom(dname, iname, obj, callback){
 
 
 //put multiple items in domain
-
 function putItemsInDom(dname,arrOfItems,callback){
 
   sdb.batchPutItem(dname,arrOfItems,function(err,res,meta){
@@ -110,17 +110,108 @@ function getItemFromDom(dname,iname,callback){
       console.log(err, err.stack);
     }
     else{
-      console.log("Those are good burgers, Walter: "+JSON.stringify(result));
+      item1 = result;
+      console.log("Those are good burgers, Walter: "+JSON.stringify(item1));
+      callback();
     }
   });
-
 }
+
+
+
+
 
 //call methods
 
+// Create domain 'friends' and values to it 
+
+createDom('friends',function(){
+
+  listDom(function(){
+
+    // Arjun and Jayu
+    //Arjun and Kanav
+
+    arr4 =  [
+    { $ItemName:'f1', kid1:'k1', kid2 : 'k5'},
+    { $ItemName:'f2', kid1:'k1', kid2 : 'k4'}
+ 	  ]
+
+    putItemsInDom('friends',arr4,function(){
+        getItemFromDom('friends','f2',function(){ console.log("hi"); })
+    });
+  });
+});
 
 
 
+
+
+
+/* Create domain 'spouse' and values to it 
+
+createDom('spouse',function(){
+
+  listDom(function(){
+
+    arr3 =  [
+    { $ItemName:'r1', spouse1:'p1', spouse2 : 'p2'},
+    { $ItemName:'r2', spouse1:'p3', spouse2 : 'p4'},
+    { $ItemName:'r3', spouse1:'p5', spouse2 : 'p6'}
+ 	  ]
+
+    putItemsInDom('spouse',arr3,function(){
+        getItemFromDom('spouse','r2',function(){ })
+    });
+  });
+});
+
+*/
+
+/*
+// kid domain
+
+arr2 =  [
+    { $ItemName:'k1', name:'Arjun', parent1: 'p1', parent2: 'p2'},
+    { $ItemName:'k2', name:'Rushabh', parent1: 'p1', parent2: 'p2'},
+    { $ItemName:'k3', name:'Nitya', parent1: 'p3', parent2: 'p4'},
+    { $ItemName:'k4', name:'Kanav', parent1: 'p3', parent2: 'p4'},
+    { $ItemName:'k5', name:'Jayu', parent1: 'p5', parent2: 'p6'},
+    { $ItemName:'k6', name:'Vriti', parent1: 'p5', parent2: 'p6'}
+  ]
+
+putItemsInDom('kid',arr2,function(){
+  
+  console.log("Added values");
+
+  getItemFromDom('kid','k5',function(){
+    console.log("Found Item was added !!");
+  })
+
+});
+*/
+
+/*
+getItemFromDom('parent','p6',function(){
+  console.log(JSON.stringify(item1));
+  console.log("Found Item was added !!");
+})
+*/
+
+
+/*
+//------------------------------------get one item from domain
+
+getItemFromDom('parent','p6',function(){console.log("Found Item was added !!");})
+
+*/
+//getItemFromDom('parent','r2',function(){console.log("Found Item!!");})
+
+
+//---------------------------------- put multiple items in domain
+//parent domain
+
+/*
 arr1 =  [
     { $ItemName:'p2', name:'Chintan', phoneno: '123457'},
     { $ItemName:'p3', name:'Prachi', phoneno: '123458'},
@@ -131,11 +222,12 @@ arr1 =  [
 
 putItemsInDom('parent',arr1,function(){console.log("By")})
 
-//getItemFromDom('parent','p6',function(){console.log("Found Item was added !!");})
+*/
 
-//
+
+
 /*
-//put one item in domain
+//----------------------------------put one item in domain
 
 parentOb ={
     	name:'Devanshi',
@@ -145,7 +237,7 @@ putItemInDom('parent', 'p1', parentOb, function(){console.log("Item added");} )
 */
 
 
-//delete domain
+//-----------------------------------delete domain
 /*
 delDom('kid', function(){
     console.log("All done");
@@ -154,7 +246,7 @@ delDom('kid', function(){
 
 //create and list domains
 
-/*
+/*------------------------------------create domain
 createDom('parent',function(){
   listDom(function(){
     console.log("All done");
